@@ -10,3 +10,4 @@ The dataset contains 256,984 cases and 19 variables, all with a different level 
 #### 3. Estimate input of numeric variables into the model with the help of the Average Marginal Effects in SHAP package.
 #### 4. Create dummy variables from categorical features.
 #### 5. Create and Test (2.) a new Logistic Regression model using dummy variables as well as the most important numerical variables.
+ 
