@@ -16,15 +16,15 @@ The resultant logistic model, after cross-validation, works best at classication
 
 The following can be done to resolve the issue:
 
-(a) adjust model parameters to account for unequal number of positive and negative cases;
+(a) although data normalisation is not required for a Logistic Regression, a Robust standartization of numerical variables may improve the outcome.
 
-(b) split datasest into 'High Income' and 'Average Income' parts.
+(b) adjust model parameters to account for unequal number of positive and negative cases;
 
-(c) although data normalisation is not required for a Logistic Regression, a Robust standartization of numerical variables may improve the outcome.
+(c) split datasest into 'High Income' and 'Average Income' parts.
 #### 3. Estimate input of numeric variables into the model with the help of the Average Marginal Effects in SHAP package.
 Annual Income, Current Loan Amount, Monthly Debt, Maximum Open Credit -- are the most important vairables. The rest could be removed
 #### 4. Create dummy variables from categorical features.
 Done
 
 #### 5. Create and Test (2.) a new Logistic Regression model using dummy variables as well as the most important numerical variables.
-
+2 (a) is implemented. The model still favors 'Fully Paid' cases with a slightly improved rate of the correct classification for 'Charged Off'.
