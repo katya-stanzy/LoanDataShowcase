@@ -6,13 +6,13 @@ The dataset contains 256 984 cases and 19 variables, all with a different level 
 #### 1. Ingest, Explore and Clean.
 The data has three main issues: (a) a large number of varied records that signify missing data and a (b) skewed    distribution of some variables with significant number of outliers; and (c) a higher number of 'Fully Paid' labels (19 014) compared with 'Charged Off' (11 448). 
 
-(a) has been addressed in the cleaning stage; the final number of records is 152 307 for 16 variables.
+(a) has been addressed in the cleaning stage; the final number of records is 152 330 for 16 variables.
 
-(b) majority of outliers are found in Annual Income, Current Credit Balance and Maximum Open credit. As these represent genuine cases, they are left in the data to be dealt with at a later stage.
+(b) majority of outliers are found in Annual Income, Current Credit Balance and Maximum Open credit.
 
 (c) may need to be addressed at the modellin stage.
 #### 2. Create and Test (1.) a preliminary classification model with Logistic Regression using numerical variables only.
-The resultant logistic model, after cross-validation, works best at classication of 'Fully Paid' cases. The 'Charged Off' had only a small proportion of cases assigned correctly: 3 592 (correct): 7 856 (wrong). NB: the confusion matrix here is such that 'Charged Off' is the positive case and 'Fully Paid' is the negative.
+The resultant logistic model, after cross-validation, works best at classication of 'Fully Paid' cases. The 'Charged Off' had only a small proportion of cases assigned correctly: 1 317 (correct): 10 168 (wrong). NB: the confusion matrix here is such that 'Charged Off' is the positive case and 'Fully Paid' is the negative. 
 
 The following can be done to resolve the issue:
 
@@ -22,7 +22,7 @@ The following can be done to resolve the issue:
 
 (c) although data normalisation is not required for a Logistic Regression, a Robust standartization of numerical variables may improve the outcome.
 #### 3. Estimate input of numeric variables into the model with the help of the Average Marginal Effects in SHAP package.
-Mean values of Maximum Credit, Annual Income, Years of Credit History, Current Loan Amount, Monthly Debt were found important for the model.  Max values of Maximum Credit and Annual Income, i.e. different set of variables, were also found important. Tax Liens, Bankruptcies, Number of Credit Problems, Number of Open Accounts, Current Credit Balance do not add to the model.
+Annual Income, Current Loan Amount, Monthly Debt, Maximum Open Credit -- are the most important vairables. The rest could be removed
 #### 4. Create dummy variables from categorical features.
 Done
 
