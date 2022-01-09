@@ -1,7 +1,5 @@
 # LoanDataShowcase
-Analysis of a bank loan dataset
-
-This folder contains my work to analyse a loan dataset, inherited through an examination in one of my study courses.
+Analysis of a bank loan datasetThis folder contains my work to analyse a loan dataset, inherited through an examination in one of my study courses.
 The dataset contains 256 984 cases and 19 variables, all with a different level of missing and potentially erroneous data.
 
 # The task
@@ -27,4 +25,5 @@ The following can be done to resolve the issue:
 Mean values of Maximum Credit, Annual Income, Years of Credit History, Current Loan Amount, Monthly Debt were found important for the model.  Max values of Maximum Credit and Annual Income, i.e. different set of variables, were also found important. Tax Liens, Bnkruptcies, Nimber of Credit Problems, Number of Open Accounts, Current Credit Balance do not add to the model.
 #### 4. Create dummy variables from categorical features.
 #### 5. Create and Test (2.) a new Logistic Regression model using dummy variables as well as the most important numerical variables.
- 
+<<<<<<< 
+>>>>>>> bfd9c173a239b48436f8e1e792c70397a38bdf55
