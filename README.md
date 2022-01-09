@@ -27,4 +27,4 @@ Annual Income, Current Loan Amount, Monthly Debt, Maximum Open Credit -- are the
 Done
 
 #### 5. Create and Test (2.) a new Logistic Regression model using dummy variables as well as the most important numerical variables.
-2 (a) is implemented. The model still favors 'Fully Paid' cases with a slightly improved rate of the correct classification for 'Charged Off'.
+2 (a) is implemented. The model still favors 'Fully Paid' cases with a slightly improved rate of the correct classification for 'Charged Off': 3672 (correct) : 7813 (wrong)
