@@ -18,9 +18,11 @@ The following can be done to resolve the issue:
 
 (a) although data normalisation is not required for a Logistic Regression, a Robust standartization of numerical variables may improve the outcome.
 
-(b) adjust model parameters to account for unequal number of positive and negative cases;
+(b) change model threshold to favour correct classification of 'Charged Off' cases.
 
-(c) split datasest into 'High Income' and 'Average Income' parts.
+(c) adjust model parameters to account for unequal number of positive and negative cases;
+
+(d) split datasest into 'High Income' and 'Average Income' parts.
 #### 3. Estimate input of numeric variables into the model with the help of the Average Marginal Effects in SHAP package.
 Annual Income, Current Loan Amount, Monthly Debt, Maximum Open Credit -- are the most important vairables. The rest could be removed
 #### 4. Create dummy variables from categorical features.
