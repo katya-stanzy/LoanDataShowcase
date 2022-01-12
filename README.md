@@ -17,7 +17,7 @@ Problems with the dataset:
 
 After cleaning, there is 152 330 cases and 16 variables.
 
-An EDA has demonstrated that Loan Term, Purpose, Current Loan Amount, Monthly Debt and Annual Income have a high association with Charged Off loans.
+An exploratory data analysis (EDA) has demonstrated that Loan Term, Purpose, Current Loan Amount, Monthly Debt and Annual Income have a high association with Charged Off loans.
 
 #### 2. Create and test a preliminary classification model with Logistic Regression using numerical variables only.
 The resultant logistic model, after cross-validation, works best at the classification of 'Fully Paid' cases. The 'Charged Off' had only a small proportion of cases assigned correctly: 1 317 (correct): 10 168 (wrong). NB: the confusion matrix here is such that 'Charged Off' is the positive case and 'Fully Paid' is negative. 
@@ -36,5 +36,5 @@ Annual Income, Current Loan Amount, Monthly Debt, Maximum Open Credit are the mo
 #### 4. Create dummy variables from categorical features.
 Done
 
-#### 5. Create and Test (2.) a new Logistic Regression model using dummy variables and the most important numerical variables.
-2a and 2c have been implemented together with balancing the sample size. The model performs a lot better for 'Charged Off': 6589 (correct) : 4896 (wrong). Selection of features to reflect results the exploratory data analysis (EDA)did not improve the model.
+#### 5. Create and test a new Logistic Regression model using dummy variables and the most important numerical variables.
+2a and 2c have been implemented together with balancing the sample size. The model performs a lot better for the 'Charged Off' cases: 6589 (correct) : 4896 (wrong). Selection of features to reflect results of the exploratory data analysis (EDA) did not improve the model.
