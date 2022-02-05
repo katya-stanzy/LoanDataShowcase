@@ -20,21 +20,41 @@ After cleaning, there is 152 330 cases and 16 variables.
 An exploratory data analysis (EDA) has demonstrated that Loan Term, Purpose, Current Loan Amount, Monthly Debt and Annual Income have a high association with Charged Off loans.
 
 #### 2. Create and test a preliminary classification model with Logistic Regression using numerical variables only.
-The resultant logistic model, after cross-validation, works best at the classification of 'Fully Paid' cases. The 'Charged Off' had only a small proportion of cases assigned correctly: 1 317 (correct): 10 168 (wrong). NB: the confusion matrix here is such that 'Charged Off' is the positive case and 'Fully Paid' is negative. 
+The resultant logistic model, after cross-validation, works best at the classification of 'Fully Paid' cases. The 'Charged Off' had only a small proportion of cases assigned correctly: 1 317 (correct): 10 168 (wrong).
 
 The following can be done to resolve the issue:
 
-(a) although data normalisation is not required for a Logistic Regression, a Robust standardization of numerical variables may improve the outcome.
+(a) A Robust standardization of numerical variables may improve the outcome;
 
-(b) change model parameters to favour the correct classification of 'Charged Off' cases.
+(b) Change model parameters to account for an unequal number of positive and negative cases;
 
-(c) adjust model parameters to account for an unequal number of positive and negative cases;
-
-(d) split dataset into 'High Income' and 'Low to Average Income' parts.
+(c) split dataset into 'High Income' and 'Low to Average Income' parts or take log of skewed variables.
 #### 3. Estimate input of numeric variables into the model with the help of the Average Marginal Effects in the SHAP package.
 Annual Income, Current Loan Amount, Monthly Debt, Maximum Open Credit are the most important among unscaled numerical variables. 
 #### 4. Create dummy variables from categorical features.
 Done
 
 #### 5. Create and test a new Logistic Regression model using dummy variables and the most important numerical variables.
-2a and 2c have been implemented together with balancing the sample size. The model performs a lot better for the 'Charged Off' cases: 6589 (correct) : 4896 (wrong). Selection of features to reflect results of the exploratory data analysis (EDA) did not improve the model.
+2 has been implemented together with balancing the sample size (LogisticRegression(class_weight='balanced', max_iter=10000)). 
+Overall, the model performs a lot better for the 'Charged Off' cases: 6589 (correct) : 4896 (wrong). 
+The model performance in respect of the  charged off (negative) loans is moderate: recall is 0.57 (compared with initial 0.11) > precision at 0.54 (compared with initial 0.55), implying a larger number of false negative cases. F1=0.56 (compared with initial 0.19).
+An explicit oversampling of the minority cases did not change the model outcome. 
+Selection of features to reflect results of the exploratory data analysis (EDA) did not improve the model.
+
+#### 6. Classification with Boosted Random Forest
+BRF (using balanced and normalised data) has performed a lot better: true negative : false positive = 7559 : 3943, negative recall = 0.66, negative precision = 0.52, F1 = 0.58
+Feature importance modelling retuns this list in the descending order:
+Credit Score, Annual Income, Maximum Open Credit, Monthly Debt, Current Loan Amount, Current Credit Balance,Number of Open Accounts, Years of Credit History, Bankruptcies, Tax Liens, Term: Long term, Home Ownership:Rent, Purpose: Business Loan, Purpose: Other.
+
+# Loan Data Database
+A database was created by importing a clean .csv file into SQLight Studio. 
+The database contains:
+Fact Table (17 columns)
+Home Ownership (2 columns)
+Loan Status (2 columns)
+Loan Term (2 columns)
+Purpoose (2 columns)
+Years in Current Job (2 columns)
+
+As the DBS is over 5 MB, it is not in the git folder.
+The SQL work is shown in two script files: SQLight_script_1 and SQLight_script_2

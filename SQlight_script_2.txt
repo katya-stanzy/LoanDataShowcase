@@ -1,0 +1,303 @@
+select [loan key],[Years in current job],years_in_current_job_fk from first_data_copy;
+
+-- recreate first data copy
+
+PRAGMA foreign_keys = 0;
+
+DROP TABLE first_data_copy;
+
+CREATE TABLE first_data_copy (
+    [loan key]                  INT,
+    [Loan Status]               TEXT,
+    [Current Loan Amount]       REAL,
+    Term                        TEXT,
+    [Credit Score]              INT,
+    [Years in current job]      TEXT,
+    [Home Ownership]            TEXT,
+    [Annual Income]             REAL,
+    Purpose                     TEXT,
+    [Monthly Debt]              REAL,
+    [Years of Credit History]   REAL,
+    [Number of Open Accounts]   INT,
+    [Number of Credit Problems] INT,
+    [Current Credit Balance]    REAL,
+    [Maximum Open Credit]       REAL,
+    Bankruptcies                INT,
+    [Tax Liens]                 INT,
+    years_in_current_job_fk     INT REFERENCES years_in_current_job (years_in_current_job_id) ON DELETE NO ACTION
+                                                                                                  ON UPDATE NO ACTION
+                                                                                                  MATCH [FULL]
+);
+
+INSERT INTO first_data_copy (
+                                [loan key],
+                                [Loan Status],
+                                [Current Loan Amount],
+                                Term,
+                                [Credit Score],
+                                [Years in current job],
+                                [Home Ownership],
+                                [Annual Income],
+                                Purpose,
+                                [Monthly Debt],
+                                [Years of Credit History],
+                                [Number of Open Accounts],
+                                [Number of Credit Problems],
+                                [Current Credit Balance],
+                                [Maximum Open Credit],
+                                Bankruptcies,
+                                [Tax Liens]
+                            )
+                            SELECT "loan key",
+                                   "Loan Status",
+                                   "Current Loan Amount",
+                                   Term,
+                                   "Credit Score",
+                                   "Years in current job",
+                                   "Home Ownership",
+                                   "Annual Income",
+                                   Purpose,
+                                   "Monthly Debt",
+                                   "Years of Credit History",
+                                   "Number of Open Accounts",
+                                   "Number of Credit Problems",
+                                   "Current Credit Balance",
+                                   "Maximum Open Credit",
+                                   Bankruptcies,
+                                   "Tax Liens"
+                               
+                              FROM first_data;
+
+PRAGMA foreign_keys = 1;
+
+-- fill out years_in_current_job_fk
+SELECT * FROM years_in_current_job;
+
+UPDATE first_data_copy
+    SET years_in_current_job_fk = 1
+    WHERE first_data_copy."Years in current job" = "10+ years";
+    
+UPDATE first_data_copy
+    SET years_in_current_job_fk = 11
+    WHERE first_data_copy."Years in current job" = "8 years";
+    
+-- add purpose table
+CREATE TABLE [purpose] (purpose_id INTEGER PRIMARY KEY AUTOINCREMENT, purpose VARCHAR NOT NULL);
+
+INSERT INTO [purpose] (purpose)
+       SELECT DISTINCT "Purpose"
+       FROM [first_data];
+
+SELECT * FROM [purpose];
+    
+-- add more foreign keys
+  
+PRAGMA foreign_keys = 0;
+
+CREATE TABLE sqlitestudio_temp_table AS SELECT *
+                                          FROM first_data_copy;
+
+DROP TABLE first_data_copy;
+
+CREATE TABLE first_data_copy (
+    [loan key]                  INT,
+    [Loan Status]               TEXT,
+    [Current Loan Amount]       REAL,
+    Term                        TEXT,
+    [Credit Score]              INT,
+    [Years in current job]      TEXT,
+    [Home Ownership]            TEXT,
+    [Annual Income]             REAL,
+    Purpose                     TEXT,
+    [Monthly Debt]              REAL,
+    [Years of Credit History]   REAL,
+    [Number of Open Accounts]   INT,
+    [Number of Credit Problems] INT,
+    [Current Credit Balance]    REAL,
+    [Maximum Open Credit]       REAL,
+    Bankruptcies                INT,
+    [Tax Liens]                 INT,
+    loan_status_fk     INTEGER REFERENCES loan_status (loan_status_id),
+    years_in_current_job_fk     INTEGER REFERENCES years_in_current_job (years_in_current_job_id),
+    home_ownership_fk     INTEGER REFERENCES home_ownership (home_ownership_id),
+    loan_term_fk     INTEGER REFERENCES loan_term (loan_term_id), 
+    purpose_fk INTEGER REFERENCES purpose (purpose_id)
+    
+);
+
+INSERT INTO first_data_copy (
+                                [loan key],
+                                [Loan Status],
+                                [Current Loan Amount],
+                                Term,
+                                [Credit Score],
+                                [Years in current job],
+                                [Home Ownership],
+                                [Annual Income],
+                                Purpose,
+                                [Monthly Debt],
+                                [Years of Credit History],
+                                [Number of Open Accounts],
+                                [Number of Credit Problems],
+                                [Current Credit Balance],
+                                [Maximum Open Credit],
+                                Bankruptcies,
+                                [Tax Liens],
+                                years_in_current_job_fk
+                            )
+                            SELECT "loan key",
+                                   "Loan Status",
+                                   "Current Loan Amount",
+                                   Term,
+                                   "Credit Score",
+                                   "Years in current job",
+                                   "Home Ownership",
+                                   "Annual Income",
+                                   Purpose,
+                                   "Monthly Debt",
+                                   "Years of Credit History",
+                                   "Number of Open Accounts",
+                                   "Number of Credit Problems",
+                                   "Current Credit Balance",
+                                   "Maximum Open Credit",
+                                   Bankruptcies,
+                                   "Tax Liens",
+                                   years_in_current_job_fk
+                              FROM sqlitestudio_temp_table;
+
+DROP TABLE sqlitestudio_temp_table;
+
+PRAGMA foreign_keys = 1;
+
+-- display result
+SELECT *FROM first_data_copy;
+    
+-- amend loan_status
+SELECT * FROM loan_status;
+
+PRAGMA foreign_keys = 0;
+UPDATE loan_status
+    SET [status key] = 1
+    WHERE status = "Charged Off";
+PRAGMA foreign_keys = 1;
+
+SELECT * FROM loan_status;
+
+-- fill out loan_status_fk
+SELECT [Loan Status],loan_status_fk FROM first_data_copy;
+
+PRAGMA foreign_keys = 0;
+
+UPDATE first_data_copy
+    SET loan_status_fk = loan_status."status key"
+    FROM loan_status
+    WHERE first_data_copy."Loan Status" = loan_status.status;
+    
+PRAGMA foreign_keys = 1;
+
+-- fill out home_ownership_fk
+SELECT [Home Ownership],home_ownership_fk FROM first_data_copy;
+
+PRAGMA foreign_keys = 0;
+
+UPDATE first_data_copy
+    SET home_ownership_fk = home_ownership.home_ownership_id
+    FROM home_ownership
+    WHERE first_data_copy."Home Ownership" = home_ownership.home_ownership;
+    
+PRAGMA foreign_keys = 1;
+
+-- fill out loan_term_fk
+SELECT [Term],loan_term_fk FROM first_data_copy;
+
+PRAGMA foreign_keys = 0;
+
+UPDATE first_data_copy
+    SET loan_term_fk = loan_term.term_id
+    FROM loan_term
+    WHERE first_data_copy."Term" = loan_term.term;
+    
+PRAGMA foreign_keys = 1;
+
+-- fill out purpose_fk
+SELECT Purpose,purpose_fk FROM first_data_copy;
+
+PRAGMA foreign_keys = 0;
+
+UPDATE first_data_copy
+    SET purpose_fk = purpose.purpose_id
+    FROM purpose
+    WHERE first_data_copy."Purpose" = purpose.purpose;
+    
+PRAGMA foreign_keys = 1;
+
+-- display first_data_copy
+SELECT * FROM first_data_copy;
+
+-- update fact_table
+
+PRAGMA foreign_keys = 0;
+
+DROP TABLE fact_table;
+
+CREATE TABLE fact_table (
+    [loan key]                  INT,
+    loan_status_fk     INTEGER REFERENCES loan_status (loan_status_id),
+    years_in_current_job_fk     INTEGER REFERENCES years_in_current_job (years_in_current_job_id),
+    home_ownership_fk     INTEGER REFERENCES home_ownership (home_ownership_id),
+    loan_term_fk     INTEGER REFERENCES loan_term (loan_term_id), 
+    purpose_fk INTEGER REFERENCES purpose (purpose_id),
+    [Current Loan Amount]       REAL,
+    [Credit Score]              INT,
+    [Annual Income]             REAL,
+    [Monthly Debt]              REAL,
+    [Years of Credit History]   REAL,
+    [Number of Open Accounts]   INT,
+    [Number of Credit Problems] INT,
+    [Current Credit Balance]    REAL,
+    [Maximum Open Credit]       REAL,
+    Bankruptcies                INT,
+    [Tax Liens]                 INT
+);
+
+INSERT INTO fact_table (
+            [loan key],
+            loan_status_fk,
+            years_in_current_job_fk,
+            home_ownership_fk,
+            loan_term_fk, 
+            purpose_fk,
+            [Current Loan Amount],
+            [Credit Score],
+            [Annual Income],
+            [Monthly Debt],
+            [Years of Credit History],
+            [Number of Open Accounts],
+            [Number of Credit Problems],
+            [Current Credit Balance],
+            [Maximum Open Credit],
+            Bankruptcies,
+            [Tax Liens]
+                            )
+                            SELECT  [loan key],
+                                    loan_status_fk,
+                                    years_in_current_job_fk,
+                                    home_ownership_fk,
+                                    loan_term_fk, 
+                                    purpose_fk,
+                                    [Current Loan Amount],
+                                    [Credit Score],
+                                    [Annual Income],
+                                    [Monthly Debt],
+                                    [Years of Credit History],
+                                    [Number of Open Accounts],
+                                    [Number of Credit Problems],
+                                    [Current Credit Balance],
+                                    [Maximum Open Credit],
+                                    Bankruptcies,
+                                    [Tax Liens]
+                              FROM first_data_copy;
+
+PRAGMA foreign_keys = 1;
+
+SELECT * FROM fact_table;

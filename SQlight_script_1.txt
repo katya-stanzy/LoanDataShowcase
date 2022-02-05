@@ -1,0 +1,232 @@
+PRAGMA foreign_keys = 0;
+CREATE TABLE sqlitestudio_temp_table AS SELECT * FROM "first data";
+DROP TABLE "first data";
+CREATE TABLE "first data" ("loan key" INTEGER PRIMARY KEY, "Loan Status" CHAR, "Current Loan Amount" DOUBLE, Term CHAR, "Credit Score" INTEGER, "Years in current job" TEXT, "Home Ownership" TEXT, "Annual Income" DOUBLE, Purpose TEXT, "Monthly Debt" DOUBLE, "Years of Credit History" DOUBLE, "Number of Open Accounts" INTEGER, "Number of Credit Problems" INTEGER, "Current Credit Balance" DOUBLE, "Maximum Open Credit" DOUBLE, Bankruptcies INTEGER, "Tax Liens" INTEGER);
+INSERT INTO "first data" ("Loan Status", "Current Loan Amount", Term, "Credit Score", "Years in current job", "Home Ownership", "Annual Income", Purpose, "Monthly Debt", "Years of Credit History", "Number of Open Accounts", "Number of Credit Problems", "Current Credit Balance", "Maximum Open Credit", Bankruptcies, "Tax Liens") SELECT "Loan Status", "Current Loan Amount", Term, "Credit Score", "Years in current job", "Home Ownership", "Annual Income", Purpose, "Monthly Debt", "Years of Credit History", "Number of Open Accounts", "Number of Credit Problems", "Current Credit Balance", "Maximum Open Credit", Bankruptcies, "Tax Liens" FROM sqlitestudio_temp_table;
+DROP TABLE sqlitestudio_temp_table;
+PRAGMA foreign_keys = 1;
+
+
+CREATE TABLE [loan status] (
+    [status key] INTEGER PRIMARY KEY,
+    status       TEXT    NOT NULL
+);
+
+SELECT *
+  FROM [loan status];
+  
+INSERT INTO [loan status] (
+                              [status key],
+                              status
+                          )
+                          VALUES (
+                              0,
+                              'Charged Off'
+                          );
+						  
+						  
+-- create fact table table
+
+CREATE TABLE [fact table] AS
+  SELECT "loan key", "Current Loan Amount","Credit Score", "Annual Income", "Monthly Debt", "Years of Credit History", "Number of Open Accounts", "Number of Credit Problems", "Current Credit Balance", "Maximum Open Credit"
+  FROM [first data];
+  
+-- create loan_term table
+  
+CREATE TABLE [loan_term] (term_id INTEGER PRIMARY KEY AUTOINCREMENT, term VARCHAR NOT NULL);
+
+INSERT INTO [loan_term] (term)
+       SELECT DISTINCT "Term"
+       FROM [first data];
+	   
+-- create years_in_current_job table
+	   
+CREATE TABLE [years_in_current_job] (term_id INTEGER PRIMARY KEY AUTOINCREMENT, years_in_current_job VARCHAR NOT NULL);
+
+INSERT INTO [years_in_current_job] (years_in_current_job)
+       SELECT DISTINCT "Years in current job"
+       FROM [first data];
+
+SELECT * FROM [years_in_current_job];
+
+-- create home_ownership table
+
+CREATE TABLE [home_ownership] (home_ownership_id INTEGER PRIMARY KEY AUTOINCREMENT, home_ownership VARCHAR NOT NULL);
+
+INSERT INTO [home_ownership] (home_ownership)
+       SELECT DISTINCT "Home Ownership"
+       FROM [first data];
+
+SELECT * FROM [home_ownership];
+ 
+
+-- introducing foreign keys
+
+PRAGMA foreign_keys = 0;
+
+CREATE TABLE sqlitestudio_temp_table AS SELECT *
+                                          FROM first_data;
+
+DROP TABLE first_data;
+
+CREATE TABLE first_data (
+    [loan key]                  INTEGER PRIMARY KEY
+                                        NOT NULL,
+    [Loan Status]               CHAR    REFERENCES loan_status ([status key]),
+    [Current Loan Amount]       DOUBLE,
+    Term                        CHAR    REFERENCES loan_term (term_id) 
+                                        NOT NULL,
+    [Credit Score]              INTEGER,
+    [Years in current job]      TEXT    REFERENCES years_in_current_job (years_in_current_job_id) 
+                                        NOT NULL,
+    [Home Ownership]            TEXT    REFERENCES home_ownership (home_ownership_id) 
+                                        NOT NULL,
+    [Annual Income]             DOUBLE,
+    Purpose                     TEXT,
+    [Monthly Debt]              DOUBLE,
+    [Years of Credit History]   DOUBLE,
+    [Number of Open Accounts]   INTEGER,
+    [Number of Credit Problems] INTEGER,
+    [Current Credit Balance]    DOUBLE,
+    [Maximum Open Credit]       DOUBLE,
+    Bankruptcies                INTEGER,
+    [Tax Liens]                 INTEGER
+);
+
+INSERT INTO first_data (
+                           [loan key],
+                           [Loan Status],
+                           [Current Loan Amount],
+                           Term,
+                           [Credit Score],
+                           [Years in current job],
+                           [Home Ownership],
+                           [Annual Income],
+                           Purpose,
+                           [Monthly Debt],
+                           [Years of Credit History],
+                           [Number of Open Accounts],
+                           [Number of Credit Problems],
+                           [Current Credit Balance],
+                           [Maximum Open Credit],
+                           Bankruptcies,
+                           [Tax Liens]
+                       )
+                       SELECT "loan key",
+                              "Loan Status",
+                              "Current Loan Amount",
+                              Term,
+                              "Credit Score",
+                              "Years in current job",
+                              "Home Ownership",
+                              "Annual Income",
+                              Purpose,
+                              "Monthly Debt",
+                              "Years of Credit History",
+                              "Number of Open Accounts",
+                              "Number of Credit Problems",
+                              "Current Credit Balance",
+                              "Maximum Open Credit",
+                              Bankruptcies,
+                              "Tax Liens"
+                         FROM sqlitestudio_temp_table;
+
+DROP TABLE sqlitestudio_temp_table;
+
+PRAGMA foreign_keys = 1;
+
+CREATE TABLE first_data_copy AS
+  SELECT *
+  FROM first_data
+  
+ ALTER TABLE first_data_copy
+  ADD years_in_current_job_fk INTEGER;
+  
+ --- change first data copy
+  
+ PRAGMA foreign_keys = 0;
+
+CREATE TABLE sqlitestudio_temp_table AS SELECT *
+                                          FROM first_data_copy;
+
+DROP TABLE first_data_copy;
+
+CREATE TABLE first_data_copy (
+    [loan key]                  INT,
+    [Loan Status]               TEXT,
+    [Current Loan Amount]       REAL,
+    Term                        TEXT,
+    [Credit Score]              INT,
+    [Years in current job]      TEXT,
+    [Home Ownership]            TEXT,
+    [Annual Income]             REAL,
+    Purpose                     TEXT,
+    [Monthly Debt]              REAL,
+    [Years of Credit History]   REAL,
+    [Number of Open Accounts]   INT,
+    [Number of Credit Problems] INT,
+    [Current Credit Balance]    REAL,
+    [Maximum Open Credit]       REAL,
+    Bankruptcies                INT,
+    [Tax Liens]                 INT,
+    years_in_current_job_fk     INTEGER REFERENCES years_in_current_job (years_in_current_job_id) ON DELETE NO ACTION
+                                                                                                  ON UPDATE NO ACTION
+                                                                                                  MATCH [FULL]
+);
+
+INSERT INTO first_data_copy (
+                                [loan key],
+                                [Loan Status],
+                                [Current Loan Amount],
+                                Term,
+                                [Credit Score],
+                                [Years in current job],
+                                [Home Ownership],
+                                [Annual Income],
+                                Purpose,
+                                [Monthly Debt],
+                                [Years of Credit History],
+                                [Number of Open Accounts],
+                                [Number of Credit Problems],
+                                [Current Credit Balance],
+                                [Maximum Open Credit],
+                                Bankruptcies,
+                                [Tax Liens],
+                                years_in_current_job_fk
+                            )
+                            SELECT "loan key",
+                                   "Loan Status",
+                                   "Current Loan Amount",
+                                   Term,
+                                   "Credit Score",
+                                   "Years in current job",
+                                   "Home Ownership",
+                                   "Annual Income",
+                                   Purpose,
+                                   "Monthly Debt",
+                                   "Years of Credit History",
+                                   "Number of Open Accounts",
+                                   "Number of Credit Problems",
+                                   "Current Credit Balance",
+                                   "Maximum Open Credit",
+                                   Bankruptcies,
+                                   "Tax Liens",
+                                   years_in_current_job_fk
+                              FROM sqlitestudio_temp_table;
+
+DROP TABLE sqlitestudio_temp_table;
+
+PRAGMA foreign_keys = 1;
+
+ -- fill out years_in_current_job_fk
+SELECT * FROM years_in_current_job;
+
+UPDATE first_data_copy
+    SET years_in_current_job_fk = 1
+    WHERE first_data_copy."Years in current job" = "10+ years";
+    
+UPDATE first_data_copy
+    SET years_in_current_job_fk = 11
+    WHERE first_data_copy."Years in current job" = "8 years";
+ 
+  
