@@ -36,14 +36,18 @@ Done
 
 #### 5. Create and test a new Logistic Regression model using dummy variables and the most important numerical variables.
 2 has been implemented together with balancing the sample size (LogisticRegression(class_weight='balanced', max_iter=10000)). 
-Overall, the model performs a lot better for the 'Charged Off' cases: 6589 (correct) : 4896 (wrong). 
-The model performance in respect of the  charged off (negative) loans is moderate: recall is 0.57 (compared with initial 0.11) > precision at 0.54 (compared with initial 0.55), implying a larger number of false negative cases. F1=0.56 (compared with initial 0.19).
+After training, the best model returned accuracy 0.66.
+
+On testing, the model performs a lot better for the 'Charged Off' cases: 6589 (correct) : 4896 (wrong). 
+The model performance in respect of the  charged off (negative) loans is moderate: negative recall is 0.57 (compared with initial 0.11), positive precision of 0.73, negative F1 = 0.56. (compared with initial 0.19).
+
 An explicit oversampling of the minority cases did not change the model outcome. 
-Selection of features to reflect results of the exploratory data analysis (EDA) did not improve the model.
 
 #### 6. Classification with Boosted Random Forest
-BRF (using balanced and normalised data) has performed a lot better: true negative : false positive = 7559 : 3943, negative recall = 0.66, negative precision = 0.52, F1 = 0.58
-Feature importance modelling retuns this list in the descending order:
+BRF was trained using normalised data and a balanced sample, with undersampled majority cases. The best model had learning rate of 1 and returned accuracy 0.70.
+On testing, BRF has performed a lot better, with true negative : false positive = 7559 : 3943; positive precision = 0.75, negative recall = 0.66; negative F1 = 0.58.
+
+Feature importance in the descending order:
 Credit Score, Annual Income, Maximum Open Credit, Monthly Debt, Current Loan Amount, Current Credit Balance,Number of Open Accounts, Years of Credit History, Bankruptcies, Tax Liens, Term: Long term, Home Ownership:Rent, Purpose: Business Loan, Purpose: Other.
 
 # Loan Data Database
